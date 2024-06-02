@@ -16,7 +16,7 @@ const DetailPage = ({ items }) => {
         <img key={index} src={image} alt={`${item.title} ${index + 1}`} style={{ maxWidth: '100%', height: 'auto' }} />
       ))}
       <p>{item.description}</p>
-      <p>Цена: {item.price} руб.</p>
+      <p>Цена: {item.price} ТГ.</p>
     </div>
   );
 };
