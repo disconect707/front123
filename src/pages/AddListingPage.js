@@ -1,6 +1,5 @@
-// src/pages/AddListingPage.js
 import React, { useState } from 'react';
-import './AddListingPage.css';
+import './AddListingPage.css'; // Ensure this CSS file exists and is styled appropriately
 
 const categories = [
   'Электроника',
@@ -17,48 +16,21 @@ const AddListingPage = ({ onAddListing }) => {
   const [images, setImages] = useState([]);
 
   const handleImageChange = (e) => {
-    setImages([...e.target.files]);
+    const files = Array.from(e.target.files);
+    const imageUrls = files.map(file => URL.createObjectURL(file));
+    setImages(imageUrls);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    images.forEach(image => formData.append('images', image));
-
-    try {
-      const response = await fetch('http://localhost:3001/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      console.log('Response data:', data);
-
-      const newListing = {
-        id: Date.now(),
-        title,
-        description,
-        price: Number(price),
-        category,
-        images: data.urls,
-      };
-
-      onAddListing(newListing);
-      setTitle('');
-      setDescription('');
-      setPrice('');
-      setCategory(categories[0]);
-      setImages([]);
-      alert('Объявление добавлено!');
-    } catch (error) {
-      console.error('Error during fetch:', error);
-      alert(`Ошибка при добавлении объявления. Пожалуйста, попробуйте снова. ${error.message}`);
-    }
+    const newListing = { id: Date.now(), title, description, price, category, images };
+    onAddListing(newListing);
+    setTitle('');
+    setDescription('');
+    setPrice('');
+    setCategory(categories[0]);
+    setImages([]);
+    alert('Объявление добавлено!');
   };
 
   return (
@@ -109,7 +81,6 @@ const AddListingPage = ({ onAddListing }) => {
             type="file"
             multiple
             onChange={handleImageChange}
-            required
           />
         </div>
         <button type="submit" className="submit-button">Добавить</button>

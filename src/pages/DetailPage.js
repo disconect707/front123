@@ -1,4 +1,3 @@
-// src/pages/DetailPage.js
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
